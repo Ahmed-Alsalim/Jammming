@@ -1,0 +1,19 @@
+.navBar {
+  background-color: #282c34;
+  color: white;
+  text-align: center;
+  width: 100vw;
+  display: inline-block;
+
+  #title {
+    margin-bottom: 0;
+    margin-top: 20px;
+  }
+
+  #subtitle {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: darkgray;
+    font-style: italic;
+  }
+}
