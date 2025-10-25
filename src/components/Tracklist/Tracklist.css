@@ -1,0 +1,10 @@
+.tracklist {
+  list-style: none;
+  width: 50vw;
+  gap: 10px;
+  display: grid;
+
+  @media screen and (max-width: 768px) {
+    width: 90vw;
+  }
+}

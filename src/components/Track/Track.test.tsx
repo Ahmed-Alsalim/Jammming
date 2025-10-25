@@ -15,6 +15,7 @@ describe('Track Component', () => {
     render(
       <Track
         track={mockTrack}
+        isPlaylist={false}
         onAdd={() => {}}
       />
     );
@@ -24,6 +25,7 @@ describe('Track Component', () => {
     render(
       <Track
         track={mockTrack}
+        isPlaylist={false}
         onAdd={() => {}}
       />
     );
@@ -39,6 +41,7 @@ describe('Track Component', () => {
     render(
       <Track
         track={mockTrack}
+        isPlaylist={false}
         onAdd={onAddMock}
       />
     );
@@ -53,6 +56,7 @@ describe('Track Component', () => {
     render(
       <Track
         track={addedTrack}
+        isPlaylist={false}
         onAdd={onAddMock}
       />
     );

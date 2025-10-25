@@ -4,9 +4,8 @@
   align-items: center;
   border-radius: 12px;
   background-color: rgb(60, 60, 102);
-  padding-left: 10px;
 
-  #addButton {
+  button {
     font-size: 24px;
     width: 50px;
     height: 100%;
@@ -14,7 +13,14 @@
     background: rgb(99, 99, 168);
     border: none;
     cursor: pointer;
-    border-radius: 0 12px 12px 0;
+
+    &#addButton {
+      border-radius: 0 12px 12px 0;
+    }
+
+    &#removeButton {
+      border-radius: 12px 0 0 12px;
+    }
 
     &:hover {
       color: lightgray;
@@ -25,7 +31,6 @@
       background-color: rgb(60, 60, 102);
       color: gray;
       cursor: not-allowed;
-
     }
   }
 }
