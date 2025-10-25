@@ -1,0 +1,31 @@
+.track {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  background-color: rgb(60, 60, 102);
+  padding-left: 10px;
+
+  #addButton {
+    font-size: 24px;
+    width: 50px;
+    height: 100%;
+    color: white;
+    background: rgb(99, 99, 168);
+    border: none;
+    cursor: pointer;
+    border-radius: 0 12px 12px 0;
+
+    &:hover {
+      color: lightgray;
+      background: rgb(78, 78, 132);
+    }
+
+    &:disabled {
+      background-color: rgb(60, 60, 102);
+      color: gray;
+      cursor: not-allowed;
+
+    }
+  }
+}
