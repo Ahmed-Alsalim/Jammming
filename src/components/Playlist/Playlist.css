@@ -1,0 +1,72 @@
+.playlist {
+  padding: 15px;
+  border-radius: 12px;
+  background-color: rgb(41, 41, 70);
+
+  .title-input {
+    border-radius: 12px;
+    box-sizing: border-box;
+    background-color: rgb(60, 60, 102);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    border: 0;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgb(99, 99, 168);
+    }
+  }
+
+  .save-button {
+    background-color: rgb(99, 99, 168);
+    border-radius: 12px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+
+    &:hover {
+      background-color: rgb(78, 78, 132);
+    }
+
+    &:disabled {
+      background-color: rgb(60, 60, 102);
+      color: gray;
+      cursor: not-allowed;
+    }
+  }
+
+  .error-message {
+    background-color: rgb(141, 0, 26);
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 10px;
+
+    p {
+      margin: 0;
+      color: white;
+      text-align: center;
+    }
+  }
+
+  .success-message {
+    background-color: rgb(61, 140, 64);
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 10px;
+
+    p {
+      margin: 0;
+      color: white;
+      text-align: center;
+    }
+  }
+}
