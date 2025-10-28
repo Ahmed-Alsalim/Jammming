@@ -3,7 +3,8 @@ import './Track.css';
 interface TrackProps {
   track: Track;
   isPlaylist: boolean;
-  onAdd: (track: Track) => void;
+  onAdd?: (track: Track) => void;
+  onRemove?: (track: Track) => void;
 }
 
 interface Track {
@@ -14,7 +15,7 @@ interface Track {
   isAdded?: boolean;
 }
 
-function Track({ track, isPlaylist, onAdd }: TrackProps) {
+function Track({ track, isPlaylist, onAdd, onRemove }: TrackProps) {
   return (
     <div
       className='track'
@@ -23,8 +24,7 @@ function Track({ track, isPlaylist, onAdd }: TrackProps) {
       {isPlaylist && (
         <button
           id='removeButton'
-          disabled={track.isAdded}
-          onClick={() => onAdd(track)}
+          onClick={() => onRemove?.(track)}
         >
           -
         </button>
@@ -38,7 +38,7 @@ function Track({ track, isPlaylist, onAdd }: TrackProps) {
         <button
           id='addButton'
           disabled={track.isAdded}
-          onClick={() => onAdd(track)}
+          onClick={() => onAdd?.(track)}
         >
           +
         </button>

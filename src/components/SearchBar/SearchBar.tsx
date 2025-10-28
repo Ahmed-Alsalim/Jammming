@@ -1,12 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './SearchBar.css';
 
 interface SearchBarProps {
-  onSearch?: () => void;
+  onSearch: (searchTerm: string) => void;
 }
 
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      onSearch(inputValue);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [inputValue, onSearch]);
 
   return (
     <div
@@ -20,7 +28,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
         autoFocus
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <button onClick={onSearch}>Search</button>
+      <button onClick={() => onSearch(inputValue)}>Search</button>
     </div>
   );
 };
