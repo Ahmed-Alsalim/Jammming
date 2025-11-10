@@ -4,11 +4,13 @@ import SearchBar from './SearchBar';
 
 describe('SearchBar Component', () => {
   test('renders without crashing', () => {
-    render(<SearchBar />);
+    const onSearchMock: Mock = vi.fn();
+    render(<SearchBar onSearch={onSearchMock} />);
   });
 
   test('contains input field with placeholder "Enter A Song, Album, or Artist"', () => {
-    render(<SearchBar />);
+    const onSearchMock: Mock = vi.fn();
+    render(<SearchBar onSearch={onSearchMock} />);
     const inputField: HTMLInputElement = screen.getByRole('textbox');
     expect(inputField).toBeInTheDocument();
     expect(inputField).toHaveAttribute(
@@ -18,7 +20,8 @@ describe('SearchBar Component', () => {
   });
 
   test('contains Search button', () => {
-    render(<SearchBar />);
+    const onSearchMock: Mock = vi.fn();
+    render(<SearchBar onSearch={onSearchMock} />);
     const searchButton: HTMLButtonElement = screen.getByRole('button', {
       name: /search/i,
     });
@@ -26,7 +29,8 @@ describe('SearchBar Component', () => {
   });
 
   test('input field updates value state on change', () => {
-    render(<SearchBar />);
+    const onSearchMock: Mock = vi.fn();
+    render(<SearchBar onSearch={onSearchMock} />);
     const inputField: HTMLInputElement = screen.getByRole('textbox');
     expect(inputField.value).toBe('');
     fireEvent.change(inputField, { target: { value: 'New Song' } });
