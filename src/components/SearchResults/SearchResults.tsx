@@ -1,55 +1,47 @@
 import './SearchResults.css';
 import { useCallback, useEffect, useState } from 'react';
 import Tracklist from '../Tracklist/Tracklist';
-import type { TrackData } from '../../types';
+import type {
+  SearchResults as SearchResultsType,
+  TrackData,
+} from '../../types';
+import { spotifyFetch } from '../../utils/FetchHelper';
 
 interface SearchResultsProps {
-  addedTracks?: TrackData[];
-  searchTerm?: string;
-}
-interface SearchResult extends TrackData {
-  isAdded?: boolean;
+  addedTracks: TrackData[];
+  searchTerm: string;
+  onAddTrack: (track: TrackData) => void;
 }
 
-function SearchResults({ searchTerm = '', addedTracks }: SearchResultsProps) {
-  const [results, setResults] = useState<SearchResult[]>([]);
+function SearchResults({
+  searchTerm = '',
+  addedTracks,
+  onAddTrack,
+}: SearchResultsProps) {
+  const [results, setResults] = useState<TrackData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleAddTrack = (track: SearchResult) => {
-    console.log(`Adding track: ${track.name}`);
-  };
-
   const updateAddedStatus = useCallback(() => {
-    if (addedTracks) {
-      setResults((prevResults) =>
-        prevResults.map((result) =>
-          addedTracks.some(({ id }) => id === result.id)
-            ? { ...result, isAdded: true }
-            : result
-        )
-      );
-    }
+    console.log('Updating added status in search results');
+    console.log('Added tracks:', addedTracks);
+    setResults((prevResults = []) =>
+      prevResults.map((result) =>
+        addedTracks?.some(({ id }) => id === result.id)
+          ? { ...result, isAdded: true }
+          : { ...result, isAdded: false }
+      )
+    );
   }, [addedTracks]);
 
   const fetchResults = useCallback(() => {
     setIsLoading(true);
     setError(null);
-    console.log(`Fetching results for: ${searchTerm}`);
-    Promise.resolve({
-      json: async () => ({
-        results: [
-          { id: 1, name: 'Song A', artist: 'Artist A', album: 'Album A' },
-          { id: 2, name: 'Song B', artist: 'Artist B', album: 'Album B' },
-        ],
-      }),
+    spotifyFetch(`/search?type=track&q=${searchTerm}`, {
+      method: 'GET',
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setResults(data.results || []);
-        updateAddedStatus();
+      .then((data: SearchResultsType<['track']>) => {
+        setResults(data.tracks?.items || []);
       })
       .catch((err) => {
         console.error('Error fetching search results:', err);
@@ -58,7 +50,7 @@ function SearchResults({ searchTerm = '', addedTracks }: SearchResultsProps) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [searchTerm, updateAddedStatus]);
+  }, [searchTerm]);
 
   useEffect(() => {
     if (searchTerm) {
@@ -69,6 +61,7 @@ function SearchResults({ searchTerm = '', addedTracks }: SearchResultsProps) {
   }, [searchTerm, fetchResults]);
 
   useEffect(() => {
+    console.log('Results or addedTracks changed, updating added status');
     updateAddedStatus();
   }, [addedTracks, updateAddedStatus]);
 
@@ -77,19 +70,18 @@ function SearchResults({ searchTerm = '', addedTracks }: SearchResultsProps) {
       id='searchResultsContainer'
       data-testid='search-results'
     >
-      <div className='resultsList'>
-        {isLoading && <p>Loading...</p>}
-        {!isLoading && error && <p>Error fetching results: {error}</p>}
-        {!isLoading && !error && results.length === 0 && searchTerm && (
-          <p>No results found</p>
-        )}
+      <h2 id='results-title'>Search Results</h2>
+      {isLoading && <p>Loading...</p>}
+      {!isLoading && error && <p>Error fetching results: {error}</p>}
+      {!isLoading && !error && results.length === 0 && searchTerm && (
+        <p>No results found</p>
+      )}
 
-        <Tracklist
-          isPlaylist={false}
-          tracks={results}
-          handleAddTrack={handleAddTrack}
-        />
-      </div>
+      <Tracklist
+        isPlaylist={false}
+        tracks={results}
+        handleAddTrack={onAddTrack}
+      />
     </div>
   );
 }
