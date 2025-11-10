@@ -1,11 +1,30 @@
 import { describe, test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Tracklist from './Tracklist';
+import type { TrackData } from '../../types';
 
 describe('Tracklist Component', () => {
-  const mockTracks = [
-    { id: 1, name: 'Song A', artist: 'Artist A', album: 'Album A' },
-    { id: 2, name: 'Song B', artist: 'Artist B', album: 'Album B' },
+  const mockTracks: TrackData[] = [
+    {
+      id: '1',
+      name: 'Song A',
+      artists: [{ name: 'Artist A' }],
+      album: {
+        name: 'Album A',
+        images: [{ url: 'https://example.com/imageA.jpg' }],
+      },
+      uri: 'spotify:track:1',
+    } as TrackData,
+    {
+      id: '2',
+      name: 'Song B',
+      artists: [{ name: 'Artist B' }],
+      album: {
+        name: 'Album B',
+        images: [{ url: 'https://example.com/imageB.jpg' }],
+      },
+      uri: 'spotify:track:2',
+    } as TrackData,
   ];
 
   test('renders without crashing', () => {
@@ -32,7 +51,7 @@ describe('Tracklist Component', () => {
     });
   });
 
-  test('handles empty track list message', () => {
+  test('handles empty track list', () => {
     render(
       <Tracklist
         isPlaylist
@@ -42,6 +61,6 @@ describe('Tracklist Component', () => {
     );
     const tracklistContainer: HTMLDivElement = screen.getByTestId('tracklist');
     expect(tracklistContainer).toBeInTheDocument();
-    expect(screen.getByText(/no tracks available/i)).toBeInTheDocument();
+    expect(tracklistContainer).toBeEmptyDOMElement();
   });
 });

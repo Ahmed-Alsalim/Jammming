@@ -5,10 +5,12 @@ import SpotifyLoginButton from './SpotifyLoginButton';
 
 describe('SpotifyLoginButton', () => {
   const mockOnTokenChange = vi.fn();
+  const mockHandleSetUserData = vi.fn();
 
   beforeEach(() => {
     localStorage.clear();
     mockOnTokenChange.mockClear();
+    mockHandleSetUserData.mockClear();
     vi.clearAllMocks();
     window.history.replaceState({}, '', window.location.pathname);
   });
@@ -17,6 +19,7 @@ describe('SpotifyLoginButton', () => {
     render(
       <SpotifyLoginButton
         isAuthenticated={false}
+        handleSetUserData={mockHandleSetUserData}
         onTokenChange={mockOnTokenChange}
       />
     );
@@ -26,6 +29,7 @@ describe('SpotifyLoginButton', () => {
     render(
       <SpotifyLoginButton
         isAuthenticated={false}
+        handleSetUserData={mockHandleSetUserData}
         onTokenChange={mockOnTokenChange}
       />
     );
@@ -42,6 +46,7 @@ describe('SpotifyLoginButton', () => {
     render(
       <SpotifyLoginButton
         isAuthenticated={true}
+        handleSetUserData={mockHandleSetUserData}
         onTokenChange={mockOnTokenChange}
       />
     );
@@ -55,6 +60,7 @@ describe('SpotifyLoginButton', () => {
     render(
       <SpotifyLoginButton
         isAuthenticated={true}
+        handleSetUserData={mockHandleSetUserData}
         onTokenChange={mockOnTokenChange}
       />
     );
@@ -78,6 +84,7 @@ describe('SpotifyLoginButton', () => {
     render(
       <SpotifyLoginButton
         isAuthenticated={false}
+        handleSetUserData={mockHandleSetUserData}
         onTokenChange={mockOnTokenChange}
       />
     );
@@ -109,18 +116,27 @@ describe('SpotifyLoginButton', () => {
 
     const mockToken = 'mock-access-token';
     const mockExpiresIn = 3600;
-    globalThis.fetch = vi.fn().mockResolvedValue({
-      json: async () => ({
-        access_token: mockToken,
-        expires_in: mockExpiresIn,
-      }),
-    });
+    const mockUserData = { id: 'user123', display_name: 'Test User' };
+
+    globalThis.fetch = vi
+      .fn()
+      .mockResolvedValueOnce({
+        json: async () => ({
+          access_token: mockToken,
+          expires_in: mockExpiresIn,
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockUserData,
+      });
 
     window.history.replaceState = vi.fn();
 
     render(
       <SpotifyLoginButton
         isAuthenticated={false}
+        handleSetUserData={mockHandleSetUserData}
         onTokenChange={mockOnTokenChange}
       />
     );
@@ -155,6 +171,7 @@ describe('SpotifyLoginButton', () => {
     render(
       <SpotifyLoginButton
         isAuthenticated={false}
+        handleSetUserData={mockHandleSetUserData}
         onTokenChange={mockOnTokenChange}
       />
     );

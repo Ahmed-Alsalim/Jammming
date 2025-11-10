@@ -1,12 +1,12 @@
 import './Tracklist.css';
 import Track from '../Track/Track';
-import type { TrackData } from '../../types';
+import type { Track as TrackType } from '../../types';
 
 interface TracklistProps {
-  tracks: TrackData[];
+  tracks: TrackType[];
   isPlaylist: boolean;
-  handleAddTrack?: (track: TrackData) => void;
-  handleRemoveTrack?: (track: TrackData) => void;
+  handleAddTrack?: (track: TrackType) => void;
+  handleRemoveTrack?: (track: TrackType) => void;
 }
 
 function Tracklist({
@@ -20,7 +20,7 @@ function Tracklist({
       data-testid='tracklist'
       className='tracklist'
     >
-      {tracks.length > 0 ? (
+      {tracks.length > 0 &&
         tracks.map((track) => (
           <Track
             key={track.id}
@@ -29,10 +29,7 @@ function Tracklist({
             onAdd={handleAddTrack}
             onRemove={handleRemoveTrack}
           />
-        ))
-      ) : (
-        <p>No tracks available</p>
-      )}
+        ))}
     </div>
   );
 }

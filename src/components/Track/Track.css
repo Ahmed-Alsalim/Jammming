@@ -6,6 +6,7 @@
   background-color: rgb(60, 60, 102);
 
   button {
+    flex-shrink: 0;
     font-size: 24px;
     width: 50px;
     height: 100%;
@@ -31,6 +32,34 @@
       background-color: rgb(60, 60, 102);
       color: gray;
       cursor: not-allowed;
+    }
+  }
+
+  .track-image {
+    border-radius: 12px;
+    margin: 10px;
+  }
+
+  .track-information {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    h3 {
+      margin: 0;
+      font-size: 20px;
+      color: white;
+
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    }
+
+    p {
+      margin: 4px;
+      color: lightgray;
     }
   }
 }

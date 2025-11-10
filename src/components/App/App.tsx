@@ -4,12 +4,13 @@ import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
 import SpotifyLoginButton from '../SpotifyLoginButton/SpotifyLoginButton';
-import type { TrackData } from '../../types';
+import type { TrackData, User } from '../../types';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [addedTracks, setAddedTracks] = useState<TrackData[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
 
   const handleAddTrack = (track: TrackData) => {
     setAddedTracks((prevTracks) => {
@@ -45,12 +46,18 @@ function App() {
 
         <div id='nav-center'>
           <h1 id='title'>Jammming</h1>
-          <h3 id='subtitle'>make your playlist</h3>
+          <h3 id='subtitle'>
+            make your playlist
+            {userData?.display_name && (
+              <span>, {userData?.display_name}!!</span>
+            )}
+          </h3>
         </div>
 
         <div id='nav-right'>
           <SpotifyLoginButton
             isAuthenticated={!!accessToken}
+            handleSetUserData={setUserData}
             onTokenChange={handleTokenChange}
           />
         </div>
@@ -70,6 +77,7 @@ function App() {
 
                 <Playlist
                   playlistTracks={addedTracks}
+                  userId={userData?.id}
                   onRemoveTrack={handleRemoveTrack}
                 />
               </div>

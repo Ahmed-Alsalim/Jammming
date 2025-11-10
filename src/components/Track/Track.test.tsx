@@ -1,15 +1,20 @@
 import { describe, test, expect, type Mock, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Track from './Track';
+import type { TrackData } from '../../types';
 
 describe('Track Component', () => {
-  // mock props
   const mockTrack = {
-    id: 1,
+    id: '1',
     name: 'Test Track',
-    artist: 'Test Artist',
-    album: 'Test Album',
-  };
+    artists: [{ name: 'Test Artist' }],
+    album: {
+      name: 'Test Album',
+      images: [{ url: 'https://example.com/image.jpg' }],
+    },
+    uri: 'spotify:track:1',
+    external_urls: { spotify: 'https://open.spotify.com/track/1' },
+  } as TrackData;
 
   test('renders without crashing', () => {
     render(

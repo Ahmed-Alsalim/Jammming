@@ -1,5 +1,7 @@
 import './SpotifyLoginButton.css';
+import { spotifyFetch } from '../../utils/FetchHelper';
 import { useEffect, useState, useRef } from 'react';
+import type { User } from '../../types';
 
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
@@ -24,11 +26,13 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
 
 interface SpotifyLoginButtonProps {
   isAuthenticated: boolean;
+  handleSetUserData: (user: User | null) => void;
   onTokenChange: (token: string | null) => void;
 }
 
 function SpotifyLoginButton({
   isAuthenticated,
+  handleSetUserData,
   onTokenChange,
 }: SpotifyLoginButtonProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,7 +59,6 @@ function SpotifyLoginButton({
       return;
     }
 
-    // Prevent duplicate token requests in strict mode
     if (tokenRequestInitiated.current) return;
     tokenRequestInitiated.current = true;
 
@@ -84,16 +87,23 @@ function SpotifyLoginButton({
           document.title,
           window.location.pathname
         );
+
+        spotifyFetch('/me', {
+          method: 'GET',
+        }).then((data: User) => {
+          handleSetUserData(data);
+        });
       })
       .catch(() => {
         localStorage.removeItem('spotify_access_token');
         localStorage.removeItem('spotify_token_expiry');
         onTokenChange(null);
+        handleSetUserData(null);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [isAuthenticated, onTokenChange]);
+  }, [handleSetUserData, isAuthenticated, onTokenChange]);
 
   const handleLogin = async () => {
     const codeVerifier = generateRandomString(64);
@@ -120,6 +130,7 @@ function SpotifyLoginButton({
     localStorage.removeItem('spotify_token_expiry');
 
     onTokenChange(null);
+    handleSetUserData(null);
   };
 
   if (isAuthenticated) {

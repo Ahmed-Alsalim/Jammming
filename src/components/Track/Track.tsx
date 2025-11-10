@@ -1,25 +1,18 @@
 import './Track.css';
+import type { TrackData } from '../../types';
 
 interface TrackProps {
-  track: Track;
+  track: TrackData;
   isPlaylist: boolean;
-  onAdd?: (track: Track) => void;
-  onRemove?: (track: Track) => void;
-}
-
-interface Track {
-  id: number;
-  name: string;
-  artist: string;
-  album: string;
-  isAdded?: boolean;
+  onAdd?: (track: TrackData) => void;
+  onRemove?: (track: TrackData) => void;
 }
 
 function Track({ track, isPlaylist, onAdd, onRemove }: TrackProps) {
   return (
     <div
       className='track'
-      style={isPlaylist ? { paddingRight: 15 } : { paddingLeft: 15 }}
+      style={isPlaylist ? { paddingRight: 15 } : {}}
     >
       {isPlaylist && (
         <button
@@ -30,9 +23,32 @@ function Track({ track, isPlaylist, onAdd, onRemove }: TrackProps) {
         </button>
       )}
 
-      <h3>{track.name}</h3>
-      <p>{track.artist}</p>
-      <p>{track.album}</p>
+      <img
+        src={track.album?.images[0]?.url}
+        alt={track.name}
+        width='100'
+        object-fit='cover'
+        className='track-image'
+      />
+
+      <div className='track-information'>
+        <h3>
+          <a
+            href={track.external_urls?.spotify}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            {track.name}
+          </a>
+        </h3>
+        <p>
+          Artists:{' '}
+          <b>{track.artists?.map(({ name }) => name).join(', ') || ''}</b>
+        </p>
+        <p>
+          Album: <b>{track.album?.name || ''}</b>
+        </p>
+      </div>
 
       {!isPlaylist && (
         <button

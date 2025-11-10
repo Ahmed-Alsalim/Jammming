@@ -1,14 +1,16 @@
 import './Playlist.css';
-import Tracklist from '../Tracklist/Tracklist';
-import type { TrackData } from '../../types';
+import { spotifyFetch } from '../../utils/FetchHelper';
 import { useState } from 'react';
+import Tracklist from '../Tracklist/Tracklist';
+import type { TrackData, Playlist as PlaylistType } from '../../types';
 
 interface PlaylistProps {
   playlistTracks: TrackData[];
+  userId?: string;
   onRemoveTrack: (track: TrackData) => void;
 }
 
-function Playlist({ playlistTracks, onRemoveTrack }: PlaylistProps) {
+function Playlist({ playlistTracks, userId, onRemoveTrack }: PlaylistProps) {
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [playlistTitle, setPlaylistTitle] = useState<string>('');
@@ -28,10 +30,28 @@ function Playlist({ playlistTracks, onRemoveTrack }: PlaylistProps) {
       return;
     }
     setIsSaving(true);
-    Promise.resolve()
+
+    spotifyFetch(`/users/${userId}/playlists`, {
+      method: 'POST',
+      body: JSON.stringify({ name: playlistTitle }),
+    })
+      .then((data: PlaylistType) => {
+        const playlistId = data.id;
+        return spotifyFetch(`/playlists/${playlistId}/tracks`, {
+          method: 'POST',
+          body: JSON.stringify({
+            uris: playlistTracks.map((track) => track.uri),
+          }),
+        });
+      })
       .then(() => {
         console.log('Playlist saved to Spotify!');
         setSaveSuccess(true);
+        setTimeout(() => {
+          setSaveSuccess(false);
+        }, 3000);
+        setPlaylistTitle('');
+        playlistTracks.forEach((track) => onRemoveTrack(track));
       })
       .catch((err) => {
         console.error('Error saving playlist:', err);
