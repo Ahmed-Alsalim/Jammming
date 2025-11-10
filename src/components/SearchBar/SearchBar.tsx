@@ -17,18 +17,20 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
   }, [inputValue, onSearch]);
 
   return (
-    <div
-      id='searchBarContainer'
-      data-testid='search-bar'
-    >
-      <input
-        value={inputValue}
-        placeholder='Enter A Song, Album, or Artist'
-        type='text'
-        autoFocus
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-      <button onClick={() => onSearch(inputValue)}>Search</button>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
+        id='searchBarContainer'
+        data-testid='search-bar'
+      >
+        <input
+          value={inputValue}
+          placeholder='Enter A Song, Album, or Artist'
+          type='text'
+          autoFocus
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <span className='search-icon'>🔍</span>
+      </div>
     </div>
   );
 };

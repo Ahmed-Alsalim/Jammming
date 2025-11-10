@@ -41,7 +41,7 @@ function App() {
 
   return (
     <>
-      <header className='navBar'>
+      <header className='navBar blur-background'>
         <div id='nav-left'>{/* Empty div for left spacing */}</div>
 
         <div id='nav-center'>

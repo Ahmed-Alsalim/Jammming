@@ -3,5 +3,5 @@
   gap: 10px;
   display: grid;
   max-height: 55vh;
-  overflow-y: auto;
+  overflow-y: scroll;
 }

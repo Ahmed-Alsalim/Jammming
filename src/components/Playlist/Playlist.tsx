@@ -45,7 +45,6 @@ function Playlist({ playlistTracks, userId, onRemoveTrack }: PlaylistProps) {
         });
       })
       .then(() => {
-        console.log('Playlist saved to Spotify!');
         setSaveSuccess(true);
         setTimeout(() => {
           setSaveSuccess(false);
@@ -64,7 +63,7 @@ function Playlist({ playlistTracks, userId, onRemoveTrack }: PlaylistProps) {
 
   return (
     <div
-      className='playlist'
+      className='playlist blur-background highlighted'
       data-testid='playlist'
     >
       <input

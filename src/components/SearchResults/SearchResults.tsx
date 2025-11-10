@@ -23,8 +23,6 @@ function SearchResults({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const updateAddedStatus = useCallback(() => {
-    console.log('Updating added status in search results');
-    console.log('Added tracks:', addedTracks);
     setResults((prevResults = []) =>
       prevResults.map((result) =>
         addedTracks?.some(({ id }) => id === result.id)
@@ -61,13 +59,13 @@ function SearchResults({
   }, [searchTerm, fetchResults]);
 
   useEffect(() => {
-    console.log('Results or addedTracks changed, updating added status');
     updateAddedStatus();
   }, [addedTracks, updateAddedStatus]);
 
   return (
     <div
       id='searchResultsContainer'
+      className='blur-background highlighted'
       data-testid='search-results'
     >
       <h2 id='results-title'>Search Results</h2>

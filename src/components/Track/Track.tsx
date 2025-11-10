@@ -11,7 +11,7 @@ interface TrackProps {
 function Track({ track, isPlaylist, onAdd, onRemove }: TrackProps) {
   return (
     <div
-      className='track'
+      className='track blur-background highlighted'
       style={isPlaylist ? { paddingRight: 15 } : {}}
     >
       {isPlaylist && (

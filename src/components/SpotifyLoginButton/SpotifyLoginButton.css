@@ -6,21 +6,23 @@
   border: none;
   border-radius: 24px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: 0.3s ease;
 
   &.login-button {
-    background-color: #1db954;
+    background-color: rgba(29, 185, 84, 0.7);
 
     &:hover {
-      background-color: #1ed760;
+      background-color: rgba(30, 215, 96, 0.7);
+      box-shadow: 0 0 10px rgba(30, 215, 96, 0.7);
     }
   }
 
   &.logout-button {
-    background-color: #e63946;
+    background-color: rgba(230, 57, 70, 0.7);
 
     &:hover {
-      background-color: #d62839;
+      background-color: rgba(214, 40, 57, 0.7);
+      box-shadow: 0 0 10px rgba(214, 40, 57, 0.7);
     }
 
     &:disabled {
